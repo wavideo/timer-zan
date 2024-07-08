@@ -9,6 +9,7 @@
     android:background="#41D0CB">
 
 
+    <!-- 중앙에 위치한, 좌측정렬 텍스트 -->
     <androidx.constraintlayout.widget.ConstraintLayout
         app:layout_constraintBottom_toTopOf="@+id/group_circle"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,10 +28,10 @@
             android:textSize="28dp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!-- 동그라미들 -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/group_circle"
         android:layout_width="200dp"
@@ -41,6 +42,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5">
 
+        <!-- 원 둘레 : 타이머 반복주기 조절 -->
         <ProgressBar
             android:id="@+id/pgb_timer_timer"
             android:alpha="0.5"
@@ -60,25 +62,7 @@
             app:layout_constraintTop_toTopOf="parent"
             />
 
-        <ProgressBar
-            android:id="@+id/pgb_countdown_timer"
-            android:alpha="0.0"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:progressDrawable="@drawable/progress_drawable"
-            android:max="1800"
-            android:progress="1800"
-            android:rotation="-90"
-            android:progressTint="#FFFFFF"
-            android:visibility="visible"
-
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
-
+        <!-- 빨간색 : 사운드 출력 -->
         <ImageView
             android:id="@+id/iv_circle_voice_timer"
             android:alpha="1"
@@ -93,6 +77,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <!-- 하얀색 : 녹음하는 동안 커지는 동그라미 -->
         <ImageView
             android:id="@+id/iv_circle_duration_timer"
             android:scaleX="0.0"
@@ -108,69 +93,99 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ImageView
-        android:id="@+id/iv_time_background_timer"
-        android:backgroundTint="#B2EFED"
-        android:background="@drawable/radius_box"
+    <!-- 하단 카운트다운 -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/group_time"
         android:visibility="visible"
-        android:layout_width="200dp"
+        android:layout_width="300dp"
         android:layout_height="50dp"
-        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/group_circle"
-        app:layout_constraintVertical_bias="0.2"/>
+        app:layout_constraintVertical_bias="0.8">
 
-    <ProgressBar
-        android:id="@+id/pgb_time_progress_timer"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
+        <!-- 뒷 배경 -->
+        <ImageView
+            android:id="@+id/iv_count_background_timer"
+            android:backgroundTint="#B2EFED"
+            android:background="@drawable/radius_box"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        android:visibility="visible"
-        android:max="100"
-        android:progress="50"
-        android:progressDrawable="@drawable/progress_time_drawable"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/group_circle"
-        app:layout_constraintVertical_bias="0.2"/>
+        <!-- 진행바 -->
+        <ProgressBar
+            android:id="@+id/pgb_count_progress_timer"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:max="100"
+            android:progress="50"
+            android:progressDrawable="@drawable/progress_time_drawable"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-    <TextView
-        android:id="@+id/tv_time_stroke_timer"
-        android:text="12분 2초"
-        android:textColor="#41D0CB"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        android:background="@drawable/radius_box_stroke"
-        android:visibility="visible"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/group_circle"
-        app:layout_constraintVertical_bias="0.2"/>
+        <!-- 맨 앞 시간 text -->
+        <TextView
+            android:id="@+id/tv_count_text_timer"
+            android:text="12분 2초"
+            android:textColor="#41D0CB"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:background="@drawable/radius_box_stroke"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+    <!-- 중지 버튼 -->
     <TextView
         android:id="@+id/tv_btn_cancel_timer"
-        android:text="잔소리 그만하기"
+        android:text="그만 들을래요"
         android:textColor="#FF7878"
         android:textSize="20dp"
         android:textStyle="bold"
         android:background="@drawable/radius_box"
         android:gravity="center"
         android:visibility="invisible"
-        android:layout_width="200dp"
+        android:layout_width="300dp"
         android:layout_height="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/group_circle"
-        app:layout_constraintVertical_bias="0.2"/>
+        app:layout_constraintVertical_bias="0.8"/>
+
+    <ImageView
+        android:id="@+id/iv_btn_cancel_timer"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="30dp"/>
+
+    <!--하단버튼 터치 방지-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginBottom="-30dp"
+        android:clickable="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
