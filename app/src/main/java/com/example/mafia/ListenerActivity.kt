@@ -2,6 +2,7 @@ package com.example.mafia
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.media.MediaRecorder
 import android.os.Bundle
 import android.os.Environment
@@ -22,11 +23,45 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import java.io.IOException
 import java.util.Date
+import android.Manifest
+import android.os.Build
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 
 
 class ListenerActivity : AppCompatActivity() {
     @SuppressLint("ClickableViewAccessibility")
     private var handler: Handler = Handler(Looper.getMainLooper())  // 러너블 사용을 위해 핸들러 소환
+
+////////////////////////////////////////////////////////////////
+// 권한 획득 쉽게, 한번에 !
+////////////////////////////////////////////////////////////////
+    private val multiplePermissionsLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+        permissions.entries.forEach { (permission, isGranted) ->
+            when {
+                isGranted -> {
+                    // 권한이 승인된 경우 처리할 작업
+                }
+                !isGranted -> {
+                    // 권한이 거부된 경우 처리할 작업
+                }
+                else -> {
+                    // 사용자가 "다시 묻지 않음"을 선택한 경우 처리할 작업
+                }
+            }
+        }
+        // multiple permission 처리에 대한 선택적 작업
+        // - 모두 허용되었을 경우에 대한 code
+        // - 허용되지 않은 Permission에 대한 재요청 code
+    }
+
+    private val permissions = arrayOf(
+        Manifest.permission.RECORD_AUDIO,
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
+    )
 
 ////////////////////////////////////////////////////////////////
 // onCreate 바깥 : 선언부
@@ -74,11 +109,12 @@ class ListenerActivity : AppCompatActivity() {
             insets
         }
 
-
-
 ////////////////////////////////////////////////////////////////
 // onCreate 시작
 ////////////////////////////////////////////////////////////////
+
+        // <권한 획득>
+        multiplePermissionsLauncher.launch(permissions)
 
         // <레이아웃 연결>
         anywhere_touch = findViewById<ConstraintLayout>(R.id.listener) // 전체화면 터치영역
@@ -114,14 +150,14 @@ class ListenerActivity : AppCompatActivity() {
             // <인텐트> 원이 90% 이상 커지면 녹음 중단 ->  Timer 액티비티로 전환
             val ListenerToTimerIntent: Intent = Intent(this, TimerActivity::class.java)
             if (durationCircle.scaleX > 0.9) {
-                handler.postDelayed( {stopRecording()}, 1000) // 1초 뒤 녹음 종료
+                handler.postDelayed( {stopRecording()}, 500) // 1초 뒤 녹음 종료
 
                 ListenerToTimerIntent.putExtra("period", period)
                 ListenerToTimerIntent.putExtra("scaleX", durationCircle.scaleX)
                 // 타이머 반복주기, 원의 크기를 Extra로 담아
                 val options = ActivityOptionsCompat.makeCustomAnimation(this, 0, 0)
                 // makeCustomAnimation으로 애니메이션 제거
-                startActivity(ListenerToTimerIntent, options.toBundle()) // 액티비티 전환
+                handler.postDelayed( {startActivity(ListenerToTimerIntent, options.toBundle()) }, 1000) // 액티비티 전환
             }
 
             // <터치 리스너 when>
@@ -233,7 +269,7 @@ class ListenerActivity : AppCompatActivity() {
                         val options = ActivityOptionsCompat.makeCustomAnimation(this, 0, 0)
                         // makeCustomAnimation으로 애니메이션 제거
 
-                        handler.postDelayed( {startActivity(ListenerToTimerIntent, options.toBundle()) }, 500) // 액티비티 전환
+                        handler.postDelayed( {startActivity(ListenerToTimerIntent, options.toBundle()) }, 1000) // 액티비티 전환
                     }
                     true
                 }
@@ -256,7 +292,7 @@ class ListenerActivity : AppCompatActivity() {
 
         // 다운로드 - "타잔.mp3" 파일 하나로 녹음 덮어쓰며 관리
         val fileName: String = Date().getTime().toString() + ".mp3"
-        output = Environment.getExternalStorageDirectory().absolutePath + "/Download/" + "tazan.mp3"
+        output = Environment.getExternalStorageDirectory().absolutePath + "/Download/" + "mysound007.mp3"
 
         // MediaRecorder() 클래스의 프로퍼티에 오디오 포맷 대입
         mediaRecorder = MediaRecorder()
@@ -296,6 +332,5 @@ class ListenerActivity : AppCompatActivity() {
         super.onPause()
         stopRecording()
     }
-
 
 } // <Class> 종료

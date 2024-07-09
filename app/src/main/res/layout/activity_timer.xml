@@ -169,8 +169,9 @@
 
     <ImageView
         android:id="@+id/iv_btn_cancel_timer"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:padding="25dp"
         android:src="@drawable/cancel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

@@ -41,7 +41,7 @@ class TimerActivity : AppCompatActivity() {
         val downloadFolder =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
         var mediaPlayer =
-            MediaPlayer.create(this, Uri.parse("${downloadFolder.absolutePath}/tazan.mp3"))
+            MediaPlayer.create(this, Uri.parse(Environment.getExternalStorageDirectory().absolutePath + "/Download/" + "mysound007.mp3"))
 
         val anywhere_touch = findViewById<ConstraintLayout>(R.id.timer) // 전체 터치 영역
         var btnCancelMini = findViewById<ImageView>(R.id.iv_btn_cancel_timer) // 기본 동그라미
@@ -100,7 +100,7 @@ class TimerActivity : AppCompatActivity() {
         timerCircle.progress = period * 10 // 둘레
 
         // 잔소리 출력
-        mediaPlayer.start()
+        handler.postDelayed( {mediaPlayer.start()}, 500)
 
 ////////////////////////////////////////////////////////////////
 // [모드 스위칭] 카운트 다운 . 타이머 조절 . 잔소리 재생
